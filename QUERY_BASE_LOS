@@ -1,0 +1,19 @@
+SELECT DISTINCT
+
+cd.NOME_DEV as NOME
+,cdf.CONTRATO_FIN as CONTRATO
+,cdf.VALOR_FIN as VALOR
+,c.RAZAO_CLI as PRODUTO
+,cdf.CPF_DEV as CPF
+,cdf.DTENTRADA_FIN as ENTRADA
+
+FROM CAD_DEVF cdf (NOLOCK)
+left join cad_cli c WITH (NOLOCK) on c.cod_cli = cdf.cod_cli
+left join cad_car cc WITH (NOLOCK) on (cc.cod_cli = cdf.cod_cli and cc.cod_car = cdf.cod_car)
+left join CAD_DEV cd with (nolock) on cd.CPF_DEV = cdf.CPF_DEV
+
+WHERE c.RAZAO_CLI IN ('LOSANGO DIGITAL', 'LOSANGO CDC')
+and cdf.CPF_DEV != '0'
+AND cdf.DTENTRADA_FIN BETWEEN '2019-10-01 00:00:00' AND '2019-10-31 00:00:00'
+
+ORDER BY DTENTRADA_FIN DESC
